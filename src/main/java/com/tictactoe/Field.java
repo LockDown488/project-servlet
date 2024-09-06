@@ -3,6 +3,7 @@ package com.tictactoe;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Field {
@@ -26,11 +27,19 @@ public class Field {
     }
 
     public int getEmptyFieldIndex() {
-        return field.entrySet().stream()
+        List<Integer> emptyIndices = field.entrySet().stream()
                 .filter(e -> e.getValue() == Sign.EMPTY)
                 .map(Map.Entry::getKey)
-                .findFirst().orElse(-1);
+                .collect(Collectors.toList());
+
+        if (emptyIndices.isEmpty()) {
+            return -1;
+        }
+
+        Random random = new Random();
+        return emptyIndices.get(random.nextInt(emptyIndices.size()));
     }
+
 
     public List<Sign> getFieldData() {
         return field.entrySet().stream()
